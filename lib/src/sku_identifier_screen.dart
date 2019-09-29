@@ -12,9 +12,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:ticsart_app/src/upload_picture.dart';
 
 class SkuIdentifierScreen extends StatefulWidget {
-  SkuIdentifierScreen({this.cameras});
+  SkuIdentifierScreen({this.cameras, this.onPictureTaked});
 
   final List<CameraDescription> cameras;
+  final void Function(String, BuildContext) onPictureTaked;
 
   @override
   _SkuIdentifierScreenState createState() {
@@ -213,8 +214,12 @@ class _SkuIdentifierScreenState extends State<SkuIdentifierScreen>
       });
       if (filePath != null) showInSnackBar('Picture saved to $filePath');
     }
-    analizePicture(filePath);
-    //analizePicture("assets/dev/chullo_test.jpg");
+
+    if (widget.onPictureTaked != null) {
+      final String tag = await analizePicture(filePath);
+      print("[tag] $tag");
+      widget.onPictureTaked(tag, context);
+    }
   }
 
   Future<String> takePicture() async {

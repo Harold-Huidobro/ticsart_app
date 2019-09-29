@@ -40,6 +40,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String sku;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -57,9 +59,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: TabBarView(
           children: <Widget>[
-            SkuIdentifierScreen(cameras: cameras),
-            //Text("In construction"),
-            QRGeneratorScreen(),
+            SkuIdentifierScreen(
+              cameras: cameras,
+              onPictureTaked: (data, context) {
+                setState(() {
+                  sku = data;
+                });
+                final tabController = DefaultTabController.of(context);
+                tabController.index = 1;
+              },
+            ),
+            QRGeneratorScreen(sku: sku),
             QRScreen(),
           ],
         ),
@@ -69,44 +79,36 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class QRGeneratorScreen extends StatefulWidget {
+  QRGeneratorScreen({this.sku});
+
+  final String sku;
+
   @override
   _QRGeneratorScreenState createState() => _QRGeneratorScreenState();
 }
 
 class _QRGeneratorScreenState extends State<QRGeneratorScreen> {
-  int _counter = 0;
-
-  void _incrementCounter() async {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          if (widget.sku != null) ...[
             Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
+              "${widget.sku}",
               style: Theme.of(context).textTheme.display1,
             ),
             QrImage(
-              data: "$_counter",
+              data: "${widget.sku}",
               embeddedImage: AssetImage("assets/logos/A.jpg"),
+            )
+          ] else
+            Text(
+              "Tome una foto para generar sku",
+              style: TextStyle(fontSize: 24),
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+        ],
       ),
     );
   }

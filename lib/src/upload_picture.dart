@@ -8,7 +8,7 @@ Future<Uint8List> getFileData(String path) async {
   return picture.buffer.asUint8List();
 }
 
-Future<void> analizePicture(String path) async {
+Future<String> analizePicture(String path) async {
   final picture = await getFileData(path);
 
   try {
@@ -22,13 +22,15 @@ Future<void> analizePicture(String path) async {
     );
     final data = json.decode(response.body) as Map<String, dynamic>;
     final predictions = data["predictions"] as List;
+    print("[predictions] $predictions");
     final mainPrediction = predictions[0] as Map<String, dynamic>;
     final tag = mainPrediction["tagName"];
-    print("[body] $tag");
+    return tag;
   } catch (e) {
     print("-----------------------");
     print("There was an error");
     print(e);
     print("-----------------------");
+    return null;
   }
 }
