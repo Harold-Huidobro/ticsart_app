@@ -208,12 +208,13 @@ class _SkuIdentifierScreenState extends State<SkuIdentifierScreen>
 
   void onTakePictureButtonPressed() async {
     final filePath = await takePicture();
-    if (mounted) {
-      setState(() {
-        imagePath = filePath;
-      });
-      if (filePath != null) showInSnackBar('Picture saved to $filePath');
-    }
+    if (!mounted) return;
+
+    setState(() => imagePath = filePath);
+
+    if (filePath == null) return;
+
+    showInSnackBar('Picture saved to $filePath');
 
     if (widget.onPictureTaked != null) {
       final String tag = await analizePicture(filePath);

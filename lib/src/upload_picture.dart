@@ -1,4 +1,4 @@
-import 'package:flutter/services.dart' show rootBundle, ByteData;
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'dart:typed_data';
 import 'dart:convert';

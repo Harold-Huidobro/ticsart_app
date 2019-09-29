@@ -48,7 +48,10 @@ class _QRScreenState extends State<QRScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Text("This is the result of scan: $qrText"),
+                  Text(
+                    qrText == null ? "Escanear un código QR" : qrText,
+                    style: TextStyle(fontSize: 30.0),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -97,7 +100,7 @@ class _QRScreenState extends State<QRScreen> {
                       )
                     ],
                   ),
-                  Row(
+                  /*Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -120,7 +123,7 @@ class _QRScreenState extends State<QRScreen> {
                         ),
                       )
                     ],
-                  ),
+                  ),*/
                 ],
               ),
             ),
